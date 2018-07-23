@@ -7,17 +7,34 @@
 //
 
 import UIKit
+import SwiftyJSON
+import Kingfisher
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var authorLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var shortLabel: UILabel!
+    
+    var news: News!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        news = News()
+        news.downloadNews {
+            DispatchQueue.main.async {
+                self.updateUI()
+            }
+        }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    func updateUI(){
+        let url = URL(string: news.image)
+        imageView.kf.setImage(with: url)
+        authorLabel.text = news.name
+        titleLabel.text = news.title
+        shortLabel.text = news.short
     }
 
 
